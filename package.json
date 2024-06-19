@@ -1,0 +1,14 @@
+{
+  "name": "ysk-lpt-fortune",
+  "module": "getData.js",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "progress": "^2.0.3"
+  }
+}
