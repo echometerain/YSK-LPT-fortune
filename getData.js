@@ -13,7 +13,10 @@ async function getData(numPosts, subName) {
         lastPost
     );
     if (!(response.status >= 200 && response.status <= 299)) {
-      throw Error(response.statusText);
+      console.log(response.statusText);
+      await new Promise((r) => setTimeout(r, 10000));
+      i--;
+      continue;
     }
     let data = await response.json();
     data = data["data"]["children"];
@@ -33,11 +36,20 @@ async function getData(numPosts, subName) {
       posts.push(str);
     }
     bar.tick();
-    lastPost = data[99]["name"];
+    lastPost = data[99]["data"]["name"];
     await new Promise((r) => setTimeout(r, 6000));
   }
-  await Bun.write("./" + subName, posts.sort().join("\n%\n"));
+  await Bun.write(
+    "./" + subName,
+    posts
+      .sort()
+      .join("\n%\n")
+      .replaceAll("/[\n]{3,}/g", "\n\n") // doesn't work!!!
+      .replaceAll("&amp;", "")
+      .replaceAll("#x200B;", "")
+      .replaceAll("nbsp;", "")
+  );
 }
 
-getData(20000, "r/youshouldknow");
-getData(30000, "r/lifeprotips");
+getData(900, "r/youshouldknow"); // max is 1000
+getData(900, "r/lifeprotips");
